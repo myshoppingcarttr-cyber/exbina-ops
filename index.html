@@ -990,25 +990,25 @@ svg { display: block; width: 100%; height: auto; }
       </div>
 
       <div class="kpi-grid">
-        <div class="card kpi-card accent-gold">
-          <div class="label">Aylık Lead</div>
-          <div class="kpi-value">1,247</div>
-          <div class="kpi-delta up">▲ +18.4% geçen aya göre</div>
+        <div class="card kpi-card accent-gold" id="kpi-lead">
+          <div class="label">Toplam Lead</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
-        <div class="card kpi-card accent-green">
+        <div class="card kpi-card accent-green" id="kpi-conv">
           <div class="label">Dönüşüm Oranı</div>
-          <div class="kpi-value">35.3<span class="unit">%</span></div>
-          <div class="kpi-delta up">▲ +2.1 puan</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
-        <div class="card kpi-card accent-purple">
-          <div class="label">Aktif Yatırımcı</div>
-          <div class="kpi-value">441</div>
-          <div class="kpi-delta up">▲ +67 yeni</div>
+        <div class="card kpi-card accent-purple" id="kpi-investor">
+          <div class="label">Kapanan Yatırım</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
-        <div class="card kpi-card accent-red">
-          <div class="label">CPL (Ortalama)</div>
-          <div class="kpi-value">₺43<span class="unit">.20</span></div>
-          <div class="kpi-delta down">▼ -5.8% optimize</div>
+        <div class="card kpi-card accent-red" id="kpi-calls">
+          <div class="label">Toplam Arama</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
       </div>
 
@@ -1448,25 +1448,41 @@ svg { display: block; width: 100%; height: auto; }
       </div>
 
       <div class="kpi-grid">
-        <div class="card kpi-card accent-purple">
-          <div class="label">Bugün Aranan</div>
-          <div class="kpi-value">247</div>
-          <div class="kpi-delta up">▲ Hedef 200+</div>
+        <div class="card kpi-card accent-purple" id="kpi-calls2">
+          <div class="label">Toplam Arama</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
-        <div class="card kpi-card accent-green">
-          <div class="label">Cevap Oranı</div>
-          <div class="kpi-value">71<span class="unit">%</span></div>
-          <div class="kpi-delta up">▲ +4.2 puan</div>
+        <div class="card kpi-card accent-green" id="kpi-positive">
+          <div class="label">Olumlu Arama</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
-        <div class="card kpi-card accent-gold">
-          <div class="label">Nitelikli Lead</div>
-          <div class="kpi-value">89</div>
-          <div class="kpi-delta up">▲ 36% conv.</div>
+        <div class="card kpi-card accent-gold" id="kpi-closed2">
+          <div class="label">Kapanan Yatırım</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
         </div>
-        <div class="card kpi-card accent-red">
-          <div class="label">Ort. Görüşme</div>
-          <div class="kpi-value">3:42</div>
-          <div class="kpi-delta up">▲ Kalite artıyor</div>
+        <div class="card kpi-card accent-red" id="kpi-deposit">
+          <div class="label">Toplam Yatırım</div>
+          <div class="kpi-value">—</div>
+          <div class="kpi-delta up">CRM'den yükleniyor...</div>
+        </div>
+      </div>
+
+      <!-- Son 7 gün arama grafiği -->
+      <div class="card" style="margin-top:1.5rem;padding:1.5rem">
+        <div class="card-label">son 7 gün</div>
+        <div class="card-title" style="margin-bottom:1rem">Günlük Arama Sayısı</div>
+        <div id="call-chart" style="display:flex;gap:8px;align-items:flex-end;height:120px"></div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="card" style="margin-top:1.5rem;padding:1.5rem">
+        <div class="card-label">müşteri pipeline</div>
+        <div class="card-title" style="margin-bottom:1rem">Statü Dağılımı</div>
+        <div id="pipeline-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem">
+          <div style="color:var(--text-mute);font-size:0.85rem">Yükleniyor...</div>
         </div>
       </div>
 
@@ -2221,6 +2237,106 @@ navItems.forEach(item => {
 document.querySelectorAll('[data-goto]').forEach(el => {
   el.addEventListener('click', () => goTo(el.dataset.goto));
 });
+
+// ── CHART FILTER BUTONLARI ────────────────────────────────────────────────────
+document.querySelectorAll('.chart-filter').forEach(group => {
+  group.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+});
+
+// ── CRM CANLI VERİ ────────────────────────────────────────────────────────────
+const CRM_URL = 'https://snugness-dragster-squint.ngrok-free.dev';
+
+async function loadCRMStats() {
+  try {
+    const r = await fetch(CRM_URL + '/api/public/stats', {
+      headers: { 'ngrok-skip-browser-warning': '1' }
+    });
+    if (!r.ok) return;
+    const s = await r.json();
+
+    // KPI kartları güncelle
+    setKPI('kpi-lead',     s.totalContacts,  '+' + s.totalContacts + ' toplam');
+    setKPI('kpi-conv',     s.totalClosed && s.totalContacts ? ((s.totalClosed / s.totalContacts) * 100).toFixed(1) + '%' : '—', s.totalClosed + ' kapandı');
+    setKPI('kpi-investor', s.totalClosed,    '+' + s.totalClosed + ' yatırımcı');
+    setKPI('kpi-calls',    s.totalCalls,     s.totalPositive + ' olumlu');
+
+    // Callcenter KPI'ları
+    setKPI('kpi-calls2',   s.totalCalls,    s.totalPositive + ' olumlu');
+    setKPI('kpi-positive', s.totalPositive, s.totalCalls > 0 ? Math.round(s.totalPositive/s.totalCalls*100) + '% oran' : '');
+    setKPI('kpi-closed2',  s.totalClosed,   s.totalClosed + ' yatırımcı');
+    setKPI('kpi-deposit',  '$' + s.totalDeposit.toLocaleString('tr-TR'), 'toplam tutar');
+
+    // Suite tile'larındaki durumları güncelle
+    const callTile = document.querySelector('[data-goto="callcenter"] .t-status');
+    if (callTile) callTile.textContent = '• ' + s.totalCalls + ' toplam arama';
+
+    // Header'daki live dot yazısını güncelle
+    const liveSpan = document.querySelector('.live-badge span:last-child');
+    if (liveSpan) liveSpan.textContent = 'CANLI · ' + s.totalContacts + ' lead · ' + s.totalCalls + ' arama';
+
+    // Son 7 gün call bar chart güncelle (varsa)
+    updateCallChart(s.last7days);
+
+    // Pipeline verisini callcenter view'ına yaz
+    updatePipeline(s.pipeline);
+
+    console.log('[CRM] Veriler yüklendi ✓', s);
+  } catch(e) {
+    console.warn('[CRM] Bağlantı kurulamadı, statik veriler gösteriliyor.');
+  }
+}
+
+function setKPI(id, val, sub) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const valEl = el.querySelector('.kpi-value');
+  const subEl = el.querySelector('.kpi-delta');
+  if (valEl) valEl.innerHTML = typeof val === 'number' ? val.toLocaleString('tr-TR') : val;
+  if (subEl && sub) subEl.textContent = sub;
+}
+
+function updateCallChart(last7) {
+  if (!last7 || !last7.length) return;
+  const container = document.getElementById('call-chart');
+  if (!container) return;
+  container.innerHTML = '';
+  const max = Math.max(...last7.map(d => d.n), 1);
+  last7.forEach(d => {
+    const pct = Math.round((d.n / max) * 100);
+    const day = d.day ? d.day.slice(5) : '';
+    const bar = document.createElement('div');
+    bar.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;flex:1';
+    bar.innerHTML = `<div style="width:100%;background:rgba(139,127,255,0.15);border-radius:4px;height:80px;display:flex;align-items:flex-end;padding:2px">
+      <div style="width:100%;background:rgba(139,127,255,0.7);border-radius:3px;height:${pct}%;min-height:4px;transition:height 0.5s"></div>
+    </div>
+    <span style="font-size:10px;color:var(--text-mute)">${day}</span>
+    <span style="font-size:11px;font-weight:600">${d.n}</span>`;
+    container.appendChild(bar);
+  });
+}
+
+function updatePipeline(pipeline) {
+  if (!pipeline) return;
+  const container = document.getElementById('pipeline-grid');
+  if (!container) return;
+  const labels = { cold:'❄️ Cold', warm:'🌤 Warm', hot:'🔥 Hot', decide:'⚡ Karar', closed:'✅ Kapandı', lost:'💀 Lost' };
+  const colors  = { cold:'#6b7280', warm:'#f59e0b', hot:'#ef4444', decide:'#8b5cf6', closed:'#22c55e', lost:'#374151' };
+  container.innerHTML = pipeline.map(p => `
+    <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center">
+      <div style="font-size:1.4rem;font-weight:800;color:${colors[p.status]||'#fff'}">${p.n}</div>
+      <div style="font-size:0.8rem;color:var(--text-dim);margin-top:4px">${labels[p.status]||p.status}</div>
+      ${p.total > 0 ? `<div style="font-size:0.75rem;color:var(--text-mute);margin-top:2px">$${p.total.toLocaleString('tr-TR')}</div>` : ''}
+    </div>`).join('');
+}
+
+// Sayfa yüklenince ve her 60 saniyede güncelle
+loadCRMStats();
+setInterval(loadCRMStats, 60000);
 
 // Build heatmap (7 days × 12 hours)
 (function(){
