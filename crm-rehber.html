@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Exbina CRM — Kullanım Rehberi</title>
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c96d;
+    --dark: #0a0a0f;
+    --dark2: #111118;
+    --dark3: #1a1a24;
+    --dark4: #22222f;
+    --text: #e8e8f0;
+    --text2: #9999b0;
+    --green: #22c55e;
+    --blue: #3b82f6;
+    --red: #ef4444;
+    --purple: #a855f7;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,15,0.95); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 0 2rem; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { color: var(--text2); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 6rem 2rem 4rem;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.12) 0%, transparent 60%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold); padding: 6px 18px; border-radius: 50px; font-size: 0.8rem;
+    margin-bottom: 1.5rem; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { font-size: 1.15rem; color: var(--text2); max-width: 600px; margin: 0 auto 2.5rem; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #000; font-weight: 700; padding: 14px 32px; border-radius: 8px;
+    text-decoration: none; font-size: 0.95rem; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,168,76,0.4); }
+  .btn-outline {
+    border: 1px solid rgba(201,168,76,0.4); color: var(--gold); padding: 14px 32px;
+    border-radius: 8px; text-decoration: none; font-size: 0.95rem; transition: all 0.2s;
+  }
+  .btn-outline:hover { background: rgba(201,168,76,0.1); }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; max-width: 800px; margin: 4rem auto 0; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--gold); }
+  .stat-label { font-size: 0.85rem; color: var(--text2); }
+
+  /* SECTION */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-tag { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 0.75rem; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 1rem; }
+  .section-desc { color: var(--text2); max-width: 600px; margin-bottom: 3rem; }
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 0; }
+
+  /* FEATURES GRID */
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .feature-card {
+    background: var(--dark3); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 1.75rem; transition: border-color 0.2s, transform 0.2s;
+  }
+  .feature-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-3px); }
+  .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .feature-card p { color: var(--text2); font-size: 0.9rem; }
+
+  /* HOW TO USE */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: grid; grid-template-columns: 60px 1fr; gap: 1.5rem;
+    padding: 2rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: #000; font-weight: 800; font-size: 1.1rem;
+    border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step p { color: var(--text2); font-size: 0.9rem; margin-bottom: 0.75rem; }
+  .step-detail {
+    background: var(--dark3); border-left: 3px solid var(--gold);
+    padding: 0.75rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: var(--text2);
+  }
+  .step-detail strong { color: var(--text); }
+
+  /* AYŞE AI */
+  .ayse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 700px) { .ayse-grid { grid-template-columns: 1fr; } }
+  .ayse-card {
+    background: var(--dark3); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 1.75rem;
+  }
+  .ayse-card.highlight { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05); }
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge-blue { background: rgba(59,130,246,0.15); color: var(--blue); }
+  .badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .badge-purple { background: rgba(168,85,247,0.15); color: var(--purple); }
+
+  /* CAMPAIGN TABLE */
+  .camp-table { width: 100%; border-collapse: collapse; }
+  .camp-table th {
+    background: var(--dark3); padding: 1rem 1.25rem; text-align: left;
+    font-size: 0.8rem; text-transform: uppercase; color: var(--text2);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .camp-table td { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; }
+  .camp-table tr:last-child td { border-bottom: none; }
+  .camp-table tr:hover td { background: rgba(201,168,76,0.04); }
+  .camp-bonus { font-weight: 800; color: var(--gold); font-size: 1.1rem; }
+
+  /* STATUS */
+  .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+  .status-item {
+    background: var(--dark3); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 1.25rem; text-align: center;
+  }
+  .status-dot { width: 12px; height: 12px; border-radius: 50%; margin: 0 auto 0.5rem; }
+  .dot-cold { background: #6b7280; }
+  .dot-warm { background: #f59e0b; }
+  .dot-hot { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+  .dot-decide { background: #8b5cf6; }
+  .dot-closed { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+  .dot-lost { background: #374151; }
+  .status-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.25rem; }
+  .status-desc { font-size: 0.78rem; color: var(--text2); }
+
+  /* FAQ */
+  .faq { display: flex; flex-direction: column; gap: 1rem; }
+  .faq-item { background: var(--dark3); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; }
+  .faq-q { padding: 1.25rem 1.5rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .faq-a { padding: 0 1.5rem 1.25rem; color: var(--text2); font-size: 0.9rem; display: none; }
+  .faq-item.open .faq-a { display: block; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-arrow { transition: transform 0.2s; color: var(--gold); }
+
+  /* ROLES */
+  .roles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .role-card {
+    background: var(--dark3); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px; padding: 1.75rem;
+  }
+  .role-card h3 { font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .role-card ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .role-card ul li { font-size: 0.88rem; color: var(--text2); display: flex; align-items: flex-start; gap: 8px; }
+  .role-card ul li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: center; padding: 3rem 2rem;
+    color: var(--text2); font-size: 0.85rem;
+  }
+  footer strong { color: var(--gold); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .step { grid-template-columns: 1fr; }
+    .step-num { width: 40px; height: 40px; font-size: 1rem; }
+  }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <polygon points="14,2 26,22 2,22" fill="none" stroke="#c9a84c" stroke-width="2"/>
+      <polygon points="14,7 22,20 6,20" fill="rgba(201,168,76,0.2)" stroke="#c9a84c" stroke-width="1"/>
+    </svg>
+    <span>Global Exbina</span> CRM
+  </div>
+  <div class="nav-links">
+    <a href="#ozellikler">Özellikler</a>
+    <a href="#nasil-kullanilir">Nasıl Kullanılır</a>
+    <a href="#ayse">Ayşe AI</a>
+    <a href="#kampanyalar">Kampanyalar</a>
+    <a href="#roller">Roller</a>
+    <a href="#sss">SSS</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-badge">Global Exbina Group — Operasyon Sistemi</div>
+    <h1>CRM'e <span>Hoş Geldiniz</span><br>Müşterilerinizi Yönetin</h1>
+    <p>Müşteri takibi, Ayşe AI aramaları, personel yönetimi ve canlı piyasa verileri — hepsi tek ekranda.</p>
+    <div class="hero-btns">
+      <a href="#nasil-kullanilir" class="btn-gold">Nasıl Kullanılır?</a>
+      <a href="#ayse" class="btn-outline">Ayşe AI Nedir?</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-num">7/24</div><div class="stat-label">Kesintisiz Erişim</div></div>
+      <div class="stat"><div class="stat-num">Ayşe</div><div class="stat-label">AI Satış Asistanı</div></div>
+      <div class="stat"><div class="stat-num">6</div><div class="stat-label">Müşteri Statüsü</div></div>
+      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Aktif Kampanya</div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ÖZELLİKLER -->
+<section id="ozellikler" class="reveal">
+  <div class="section-tag">Özellikler</div>
+  <h2 class="section-title">CRM Ne Yapabilir?</h2>
+  <p class="section-desc">Tüm müşteri süreçlerinizi tek platformdan yönetin. Satıştan analize, AI aramalardan personel takibine kadar.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">👥</div>
+      <h3>Müşteri Yönetimi</h3>
+      <p>Tüm müşterilerinizi tek listede görün. Statü, satış tutarı, kanal ve atanan personeli takip edin. Filtreleyin, arayın, düzenleyin.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <h3>Ayşe AI Aramaları</h3>
+      <p>Yapay zeka destekli Ayşe, müşterilerinizi otomatik arar. Canlı piyasa verileri ve olay senaryolarıyla satış yapar. Görüşmeyi analiz eder, skoru gösterir.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📞</div>
+      <h3>MicroSIP Entegrasyonu</h3>
+      <p>Müşteri profilinden tek tıkla arama başlatın. MicroSIP otomatik açılır, numara hazır gelir. Görüşme bittikten sonra not ekleyin.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Canlı Raporlar</h3>
+      <p>Personel bazında satış performansı, toplam yatırım tutarı, günlük arama sayısı ve pipeline analizi — gerçek zamanlı güncellenir.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <h3>Lead Havuzu</h3>
+      <p>Yeni müşteri listelerini toplu yükleyin. Excel/CSV formatında. Personele atayın ya da havuzda bekletin. Mükerrer numara otomatik engellenir.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <h3>Canlı Piyasa</h3>
+      <p>Altın, gümüş, petrol, Nasdaq, DAX, EUR/USD fiyatları her 60 saniyede güncellenir. Ayşe bu verileri kullanarak müşteriyi ikna eder.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NASIL KULLANILIR -->
+<section id="nasil-kullanilir" class="reveal">
+  <div class="section-tag">Kullanım Kılavuzu</div>
+  <h2 class="section-title">Adım Adım Nasıl Kullanılır?</h2>
+  <p class="section-desc">İlk girişten ilk satışa kadar tüm adımlar burada.</p>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <h3>Giriş Yap</h3>
+        <p>CRM adresini tarayıcıda aç. E-posta ve şifreni gir. Admin sana kullanıcı adı ve şifre tanımlar.</p>
+        <div class="step-detail">
+          <strong>Admin:</strong> admin@forex.com | Personel: kendine verilen e-posta ile giriş yapar.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <h3>Müşteri Listeni Gör</h3>
+        <p>"Müşteriler" sekmesine tıkla. Sana atanmış tüm müşteriler burada listelenir. Arama, filtre ve sıralama kullanabilirsin.</p>
+        <div class="step-detail">
+          <strong>Sütunlar:</strong> Ad, Telefon, Statü, Kanal, Tutar, Ayşe Skoru, İşlemler
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <h3>Müşteri Ara</h3>
+        <p>Telefon simgesine tıkla — MicroSIP otomatik açılır ve müşteri numarasını hazır getirir. Görüşme biter, CRM'e dön.</p>
+        <div class="step-detail">
+          <strong>Personel:</strong> Arama tuşu MicroSIP'i kendi bilgisayarında açar. Kurulum için PERSONEL_KURULUM.bat dosyasını çalıştır.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div>
+        <h3>Not ve Statü Güncelle</h3>
+        <p>Görüşme sonrası müşteriyi aç. "Not Ekle" ile görüşme detayını yaz. Statüyü güncelle: Cold → Warm → Hot → Karar → Kapandı.</p>
+        <div class="step-detail">
+          <strong>Önemli:</strong> "Kapandı" statüsü için yatırım tutarını gir — raporlara yansır.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div>
+        <h3>Ayşe ile Toplu Arama Başlat (Admin)</h3>
+        <p>Müşteriler sekmesinde birden fazla müşteriyi seç. "Ayşe ile Ara" butonuna tıkla. Ayşe sırayla herkesi arar, görüşme bittikten sonra sonuçları çek.</p>
+        <div class="step-detail">
+          <strong>"Sonuçları Getir" butonuna bas</strong> — Ayşe'nin notları ve skorları müşteri kartına otomatik eklenir.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div>
+        <h3>Raporları İncele (Admin)</h3>
+        <p>"Raporlar" sekmesinde tüm ekibin performansını gör. Kişi bazında arama sayısı, yatırım tutarı ve pipeline durumu görünür.</p>
+        <div class="step-detail">
+          <strong>Pipeline:</strong> Her statüde kaç müşteri var ve toplam ne kadar tutar temsil ediyor — grafik olarak gösterilir.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MÜŞTERİ STATÜLERİ -->
+<section class="reveal">
+  <div class="section-tag">Pipeline</div>
+  <h2 class="section-title">Müşteri Statüleri Ne Anlama Gelir?</h2>
+  <p class="section-desc">Her müşteri satış sürecinde bir statüde bulunur. Görüşme sonrası mutlaka güncelle.</p>
+  <div class="status-grid">
+    <div class="status-item">
+      <div class="status-dot dot-cold"></div>
+      <div class="status-name">❄️ Cold</div>
+      <div class="status-desc">Henüz iletişim kurulmadı veya ilk temas yapıldı</div>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-warm"></div>
+      <div class="status-name">🌤 Warm</div>
+      <div class="status-desc">İlgi gösterdi, tekrar aranacak</div>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-hot"></div>
+      <div class="status-name">🔥 Hot</div>
+      <div class="status-desc">Çok ilgili, yakında karar verebilir</div>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-decide"></div>
+      <div class="status-name">⚡ Karar</div>
+      <div class="status-desc">Yatırım kararı aşamasında, takip kritik</div>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-closed"></div>
+      <div class="status-name">✅ Kapandı</div>
+      <div class="status-desc">Yatırım yapıldı! Tutarı gir.</div>
+    </div>
+    <div class="status-item">
+      <div class="status-dot dot-lost"></div>
+      <div class="status-name">💀 Lost</div>
+      <div class="status-desc">Kesin reddetti, takip kapatıldı</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- AYŞE AI -->
+<section id="ayse" class="reveal">
+  <div class="section-tag">Yapay Zeka</div>
+  <h2 class="section-title">Ayşe AI Nasıl Çalışır?</h2>
+  <p class="section-desc">Ayşe, Global Exbina'nın AI satış asistanıdır. Müşterileri otomatik arar, piyasa verileriyle ikna eder, görüşmeyi analiz eder.</p>
+  <div class="ayse-grid">
+    <div class="ayse-card highlight">
+      <div class="badge badge-gold">🤖 Nasıl Konuşur?</div>
+      <h3 style="margin-bottom:1rem;">Senaryo Bazlı Satış</h3>
+      <p style="color:var(--text2); font-size:0.9rem; margin-bottom:1rem;">Her aramada o günün ekonomik olayını kullanarak FOMO yaratır:</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:0.75rem;">
+        <li style="font-size:0.85rem; color:var(--text2); display:flex; gap:8px;"><span style="color:var(--gold);">▸</span> <span><strong style="color:var(--text);">Canlı fiyat çeker</strong> — Altın, Petrol, Nasdaq anlık</span></li>
+        <li style="font-size:0.85rem; color:var(--text2); display:flex; gap:8px;"><span style="color:var(--gold);">▸</span> <span><strong style="color:var(--text);">Olay senaryosu kurar</strong> — "Yarın Fed kararı var, altın 50$ hareket edecek"</span></li>
+        <li style="font-size:0.85rem; color:var(--text2); display:flex; gap:8px;"><span style="color:var(--gold);">▸</span> <span><strong style="color:var(--text);">En az 5 itiraz karşılar</strong> — hemen bırakmaz</span></li>
+        <li style="font-size:0.85rem; color:var(--text2); display:flex; gap:8px;"><span style="color:var(--gold);">▸</span> <span><strong style="color:var(--text);">Kampanyaları sırayla sunar</strong> — %100 → %50 → %20</span></li>
+        <li style="font-size:0.85rem; color:var(--text2); display:flex; gap:8px;"><span style="color:var(--gold);">▸</span> <span><strong style="color:var(--text);">Demo hesabı son çare olarak önerir</strong></span></li>
+      </ul>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:1rem;">
+      <div class="ayse-card">
+        <div class="badge badge-green">✅ Sonuç Analizi</div>
+        <h3 style="margin-bottom:0.5rem;">Görüşme Skoru</h3>
+        <p style="color:var(--text2); font-size:0.88rem;">Görüşme bittikten sonra "Sonuçları Getir" butonuna basın. Ayşe'nin her araması için 1-10 arası AI skoru hesaplanır ve müşteri kartında görünür.</p>
+      </div>
+      <div class="ayse-card">
+        <div class="badge badge-blue">🎙 Görüşme Özeti</div>
+        <h3 style="margin-bottom:0.5rem;">Otomatik Transkript</h3>
+        <p style="color:var(--text2); font-size:0.88rem;">Her aramanın tam transkripti ve özeti müşteri notlarına otomatik eklenir. Dinlemeden okuyarak anlayabilirsiniz.</p>
+      </div>
+      <div class="ayse-card">
+        <div class="badge badge-purple">🛡 Lisanslı</div>
+        <h3 style="margin-bottom:0.5rem;">Güven İtirazında</h3>
+        <p style="color:var(--text2); font-size:0.88rem;">Müşteri lisans sorarsa: Lisans no <strong style="color:var(--text);">ASC/9225/2019</strong>, sorgulama: <strong style="color:var(--gold);">asiancop.com</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- KAMPANYALAR -->
+<section id="kampanyalar" class="reveal">
+  <div class="section-tag">Kampanyalar</div>
+  <h2 class="section-title">Aktif Kampanyalar</h2>
+  <p class="section-desc">Müşteriye sunarken lot şartını mutlaka açıklayın. Ayşe de aynı bilgilerle müşterilere anlatır.</p>
+  <div style="background:var(--dark3); border:1px solid rgba(255,255,255,0.06); border-radius:12px; overflow:hidden;">
+    <table class="camp-table">
+      <thead>
+        <tr>
+          <th>Kampanya</th>
+          <th>Bonus</th>
+          <th>Min. Yatırım</th>
+          <th>Lot Şartı</th>
+          <th>Açıklama</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sabit Kur</strong></td>
+          <td><span class="camp-bonus">38 TL/$ Kur</span></td>
+          <td>$1.000</td>
+          <td>%5 lot</td>
+          <td>Dolar yükselirken kura karşı korunma</td>
+        </tr>
+        <tr>
+          <td><strong>Tether Bonus</strong></td>
+          <td><span class="camp-bonus">+%10</span></td>
+          <td>$200</td>
+          <td><span style="color:var(--green);">Şartsız</span></td>
+          <td>Tether ile yatırıma direkt bonus, lot şartı yok</td>
+        </tr>
+        <tr>
+          <td><strong>Başlangıç Bonus</strong></td>
+          <td><span class="camp-bonus">+%20</span></td>
+          <td>$200</td>
+          <td>20 lot</td>
+          <td>200$ yatır, 240$'la başla</td>
+        </tr>
+        <tr>
+          <td><strong>Büyük Bonus</strong></td>
+          <td><span class="camp-bonus">+%50</span></td>
+          <td>$200</td>
+          <td>30 lot</td>
+          <td>1.000$ yatır, 1.500$'la işlem yap</td>
+        </tr>
+        <tr>
+          <td><strong>Süper Bonus</strong></td>
+          <td><span class="camp-bonus">+%100</span></td>
+          <td>$200</td>
+          <td>50 lot</td>
+          <td>1.000$ yatır, 2.000$'la işlem yap</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:1rem; padding:1rem; background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.2); border-radius:8px; font-size:0.85rem; color:var(--text2);">
+    <strong style="color:var(--gold);">Lot şartı nedir?</strong> — Yatırımcının bonuslu bakiyeyle işlem yaparak belirli lot adedini tamamlaması gerekir. Tamamlandıktan sonra çekim yapabilir. Örnek: %100 bonusta 50 lot tamamlayan 2.000$'ı çekebilir.
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ROLLER -->
+<section id="roller" class="reveal">
+  <div class="section-tag">Yetki Sistemi</div>
+  <h2 class="section-title">Kullanıcı Rolleri</h2>
+  <p class="section-desc">Her rolün görebileceği ve yapabileceği işlemler farklıdır.</p>
+  <div class="roles-grid">
+    <div class="role-card">
+      <h3>👑 Admin</h3>
+      <ul>
+        <li>Tüm müşterileri görür ve yönetir</li>
+        <li>Personel ekler, siler, düzenler</li>
+        <li>Lead havuzunu yönetir</li>
+        <li>Müşteri personele atar</li>
+        <li>Ayşe toplu arama başlatır</li>
+        <li>Tüm raporları görür</li>
+        <li>VAPI ve sistem ayarlarını yapar</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h3>💼 Satış Personeli</h3>
+      <ul>
+        <li>Sadece kendi müşterilerini görür</li>
+        <li>Müşteri statüsünü günceller</li>
+        <li>Not ekler ve düzenler</li>
+        <li>MicroSIP ile arama yapar</li>
+        <li>Kendi arama geçmişini görür</li>
+        <li>Kendi raporunu görür</li>
+      </ul>
+    </div>
+    <div class="role-card">
+      <h3>🤖 Ayşe (Bot)</h3>
+      <ul>
+        <li>Otomatik müşteri araması yapar</li>
+        <li>Canlı piyasa verisini kullanır</li>
+        <li>Görüşme sonuçlarını sisteme yazar</li>
+        <li>AI skoru hesaplar</li>
+        <li>Transkript ve özet ekler</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SSS -->
+<section id="sss" class="reveal">
+  <div class="section-tag">Sık Sorulan Sorular</div>
+  <h2 class="section-title">SSS</h2>
+  <p class="section-desc">Aklınızdaki sorular burada.</p>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Personel kurulumu nasıl yapılır? <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Personelin bilgisayarında <strong>PERSONEL_KURULUM.bat</strong> dosyasını çalıştırın. CRM e-postası ve şifresiyle giriş yapılır, agent arka planda başlar. Bundan sonra CRM'deki arama butonuna basınca MicroSIP kendi bilgisayarında otomatik açılır.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Ayşe'nin arama sonuçları neden görünmüyor? <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Ayşe aramaları bitince sonuçlar otomatik gelmez. Müşteriler sekmesinde sağ üstte <strong>"Sonuçları Getir"</strong> butonuna basmanız gerekir. Sonuçlar 2-3 saniye sonra yüklenir.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Toplu müşteri listesi nasıl yüklenir? <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Admin panelinde <strong>"Havuz"</strong> sekmesine gidin. "Toplu Yükle" butonuna basın. Excel veya CSV formatında, ilk sütun Ad, ikinci sütun Telefon olacak şekilde hazırlayın. Mükerrer numaralar otomatik engellenir.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Müşteri başka personele nasıl aktarılır? <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Müşteriyi açın, düzenle butonuna basın. "Atanan Personel" alanından yeni personeli seçin ve kaydedin. Müşteri artık yeni personelin listesinde görünür.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Ayşe'nin skoru ne anlama geliyor? <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">1-10 arası AI skoru, Claude Haiku modeli tarafından görüşme transkriptini analiz ederek verilir. <strong>7+</strong>: Çok ilgili, öncelikli ara. <strong>4-6</strong>: Biraz ilgili, takip gerekli. <strong>1-3</strong>: İlgisiz veya ulaşılamadı.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Minimum yatırım tutarı nedir? <span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">Minimum başlangıç <strong>200 USD</strong>'dir. %20 bonus kampanyasıyla 200 dolar yatırıp 240 dolarla işleme başlanabilir.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2024 <strong>Global Exbina Group</strong> — Dahili Kullanım İçindir</p>
+  <p style="margin-top:0.5rem;">Lisans: <strong>ASC/9225/2019</strong> | Sorgu: <strong>asiancop.com</strong></p>
+</footer>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
