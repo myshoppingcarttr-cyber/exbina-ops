@@ -1284,6 +1284,48 @@ svg { display: block; width: 100%; height: auto; }
         <p class="view-sub">Meta (Facebook + Instagram) ve Twitter/X platformları için bütçe paketleri. Her seviye için öngörülen lead sayısı, CPL hedefi ve ROAS projeksiyonu.</p>
       </div>
 
+      <!-- Canlı harcama takibi -->
+      <div class="card" style="margin-bottom:1.5rem;padding:1.5rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+          <div>
+            <div class="card-label">aylık bütçe takibi</div>
+            <div class="card-title">Nisan 2026 Harcamaları</div>
+          </div>
+          <button onclick="saveBudget()" style="padding:8px 18px;background:var(--gold);border:none;border-radius:8px;color:var(--bg-0);font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer">💾 Kaydet</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+          <div style="padding:14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px">
+            <div style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:8px">AYLIK HEDEF (₺)</div>
+            <input id="budget-target" type="number" value="8000"
+              style="width:100%;background:transparent;border:none;color:var(--gold);font-family:'Syne',sans-serif;font-weight:800;font-size:28px;outline:none">
+          </div>
+          <div style="padding:14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px">
+            <div style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:8px">META (FB+IG) HARCAMA (₺)</div>
+            <input id="budget-meta" type="number" value="0"
+              style="width:100%;background:transparent;border:none;color:var(--text);font-family:'Syne',sans-serif;font-weight:800;font-size:28px;outline:none">
+          </div>
+          <div style="padding:14px;background:var(--bg-2);border:1px solid var(--border);border-radius:10px">
+            <div style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:8px">TWITTER/X HARCAMA (₺)</div>
+            <input id="budget-twitter" type="number" value="0"
+              style="width:100%;background:transparent;border:none;color:var(--text);font-family:'Syne',sans-serif;font-weight:800;font-size:28px;outline:none">
+          </div>
+          <div style="padding:14px;background:rgba(74,222,128,0.06);border:1px solid rgba(74,222,128,0.2);border-radius:10px">
+            <div style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px;margin-bottom:8px">KALAN BÜTÇE (₺)</div>
+            <div id="budget-remaining" style="font-family:'Syne',sans-serif;font-weight:800;font-size:28px;color:var(--green)">₺8,000</div>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+            <span style="color:var(--text-dim)">Kullanım oranı</span>
+            <span id="budget-pct" style="font-family:'JetBrains Mono',monospace;color:var(--gold)">0%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden">
+            <div id="budget-bar" style="height:100%;background:linear-gradient(90deg,var(--gold),var(--red));width:0%;border-radius:4px;transition:width 0.5s"></div>
+          </div>
+        </div>
+        <div id="budget-status" style="font-size:12px;color:var(--text-mute);margin-top:8px"></div>
+      </div>
+
       <div class="budget-tiers">
         <div class="card budget-tier">
           <div class="tier-name">Başlangıç</div>
@@ -1559,67 +1601,12 @@ svg { display: block; width: 100%; height: auto; }
                 <th>ID</th>
                 <th>Lead</th>
                 <th>Süre</th>
-                <th>Segment</th>
+                <th>Danışman</th>
                 <th>Durum</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td class="mono">#7812</td>
-                <td>M. Kaya</td>
-                <td class="mono">4:18</td>
-                <td>AL-SAT</td>
-                <td><span class="status-pill invested">YATIRIMCI</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7811</td>
-                <td>E. Şen</td>
-                <td class="mono">3:02</td>
-                <td>Trade Robotu</td>
-                <td><span class="status-pill hot">SICAK</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7810</td>
-                <td>A. Demir</td>
-                <td class="mono">2:47</td>
-                <td>Endeks</td>
-                <td><span class="status-pill potential">POTANSİYEL</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7809</td>
-                <td>B. Yıldız</td>
-                <td class="mono">0:28</td>
-                <td>Hisse</td>
-                <td><span class="status-pill noanswer">CEVAPSIZ</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7808</td>
-                <td>Z. Akın</td>
-                <td class="mono">5:21</td>
-                <td>Emtia</td>
-                <td><span class="status-pill invested">YATIRIMCI</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7807</td>
-                <td>H. Polat</td>
-                <td class="mono">3:55</td>
-                <td>AL-SAT</td>
-                <td><span class="status-pill potential">POTANSİYEL</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7806</td>
-                <td>Y. Çelik</td>
-                <td class="mono">1:12</td>
-                <td>Trade Robotu</td>
-                <td><span class="status-pill noanswer">CEVAPSIZ</span></td>
-              </tr>
-              <tr>
-                <td class="mono">#7805</td>
-                <td>S. Arslan</td>
-                <td class="mono">4:33</td>
-                <td>Endeks</td>
-                <td><span class="status-pill hot">SICAK</span></td>
-              </tr>
+            <tbody id="recent-calls-tbody">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-mute);padding:20px">Yükleniyor...</td></tr>
             </tbody>
           </table>
         </div>
@@ -1788,6 +1775,63 @@ svg { display: block; width: 100%; height: auto; }
         </table>
       </div>
     </div>
+
+      <!-- Telegram Sinyal Gönderici -->
+      <div class="card" style="margin-top:1.5rem;padding:1.5rem">
+        <div class="card-label">samuray · canlı panel</div>
+        <div class="card-title" style="margin-bottom:1rem">Sinyal Gönder</div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div>
+            <label style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px">KANAL / CHAT ID</label>
+            <input id="tg-chat-id" placeholder="@samuray_vip veya -1001234567890"
+              style="width:100%;margin-top:6px;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px">ŞİFRELEME</label>
+            <select id="tg-parse-mode"
+              style="width:100%;margin-top:6px;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:13px;outline:none">
+              <option value="HTML">HTML (kalın, italik)</option>
+              <option value="Markdown">Markdown</option>
+              <option value="">Düz metin</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <label style="font-size:11px;color:var(--text-mute);font-family:'JetBrains Mono',monospace;letter-spacing:1px">HAZIR ŞABLONLAR</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+            <button onclick="tgTemplate('altin')" style="padding:6px 14px;border:1px solid rgba(212,168,75,0.3);background:rgba(212,168,75,0.08);border-radius:6px;color:var(--gold);font-size:12px;cursor:pointer">⚡ Altın Sinyali</button>
+            <button onclick="tgTemplate('petrol')" style="padding:6px 14px;border:1px solid rgba(230,57,70,0.3);background:rgba(230,57,70,0.08);border-radius:6px;color:var(--red);font-size:12px;cursor:pointer">🛢 Petrol Sinyali</button>
+            <button onclick="tgTemplate('nasdaq')" style="padding:6px 14px;border:1px solid rgba(34,211,238,0.3);background:rgba(34,211,238,0.08);border-radius:6px;color:var(--cyan);font-size:12px;cursor:pointer">📈 Nasdaq Sinyali</button>
+            <button onclick="tgTemplate('dax')" style="padding:6px 14px;border:1px solid rgba(139,127,255,0.3);background:rgba(139,127,255,0.08);border-radius:6px;color:var(--purple);font-size:12px;cursor:pointer">🇩🇪 DAX Sinyali</button>
+            <button onclick="tgTemplate('genel')" style="padding:6px 14px;border:1px solid var(--border);background:var(--bg-2);border-radius:6px;color:var(--text-dim);font-size:12px;cursor:pointer">📊 Günlük Özet</button>
+          </div>
+        </div>
+
+        <textarea id="tg-message" rows="6" placeholder="Mesajınızı buraya yazın..."
+          style="width:100%;padding:12px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;resize:vertical;outline:none;line-height:1.6"></textarea>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+          <button id="tg-send-btn" onclick="sendTelegramSignal()"
+            style="padding:10px 24px;background:linear-gradient(135deg,#229ED9,#1a7fab);border:none;border-radius:8px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:opacity 0.2s">
+            ⚡ Gönder
+          </button>
+          <span id="tg-status" style="font-size:13px;color:var(--text-mute)"></span>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-mute)">
+            CRM sunucusu üzerinden gönderilir · <span id="tg-api-url-display" style="font-family:'JetBrains Mono',monospace;font-size:11px">bağlantı kontrol ediliyor...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Son sinyaller -->
+      <div class="card" style="margin-top:1.5rem;padding:1.5rem">
+        <div class="card-label">gönderilen sinyaller</div>
+        <div class="card-title" style="margin-bottom:1rem">Son 20 Mesaj</div>
+        <div id="telegram-signals-list">
+          <div style="color:var(--text-mute);font-size:13px">Yükleniyor...</div>
+        </div>
+      </div>
 
     <!-- ============ VIEW: ADSETS ============ -->
     <div class="view" id="view-adsets">
@@ -2082,49 +2126,49 @@ svg { display: block; width: 100%; height: auto; }
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text-mute)">ADIM 01</div>
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Reklam görüntüleme</div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Toplam Lead</div>
                 </div>
-                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">487,200</div>
+                <div id="funnel-n1" style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">—</div>
               </div>
             </div>
-            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px">↓ CTR 3.1%</div>
+            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px">↓ Arama yapılan</div>
             <div style="background:linear-gradient(90deg,rgba(34,211,238,0.3),rgba(34,211,238,0.08));padding:14px 18px;border-radius:10px;border-left:3px solid #22d3ee;width:90%">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text-mute)">ADIM 02</div>
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Tıklama / form</div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Görüşme yapıldı</div>
                 </div>
-                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">15,103</div>
+                <div id="funnel-n2" style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">—</div>
               </div>
             </div>
-            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px">↓ Lead conv. 8.3%</div>
+            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px" id="funnel-r2">↓</div>
             <div style="background:linear-gradient(90deg,rgba(74,222,128,0.3),rgba(74,222,128,0.08));padding:14px 18px;border-radius:10px;border-left:3px solid #4ade80;width:75%">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text-mute)">ADIM 03</div>
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Nitelikli lead</div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Olumlu görüşme</div>
                 </div>
-                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">1,247</div>
+                <div id="funnel-n3" style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">—</div>
               </div>
             </div>
-            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px">↓ AI call conv. 71%</div>
+            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px" id="funnel-r3">↓</div>
             <div style="background:linear-gradient(90deg,rgba(212,168,75,0.35),rgba(212,168,75,0.1));padding:14px 18px;border-radius:10px;border-left:3px solid #d4a84b;width:58%">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text-mute)">ADIM 04</div>
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Görüşme yapıldı</div>
+                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Sıcak / Karar aşaması</div>
                 </div>
-                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">885</div>
+                <div id="funnel-n4" style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px">—</div>
               </div>
             </div>
-            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px">↓ Invest conv. 49.8%</div>
+            <div style="text-align:center;color:var(--text-mute);font-family:monospace;font-size:14px" id="funnel-r4">↓</div>
             <div style="background:linear-gradient(90deg,rgba(230,57,70,0.35),rgba(230,57,70,0.1));padding:14px 18px;border-radius:10px;border-left:3px solid #e63946;width:42%">
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div>
                   <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text-mute)">ADIM 05 · FINAL</div>
                   <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px">Yatırımcı</div>
                 </div>
-                <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--red)">441</div>
+                <div id="funnel-n5" style="font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--red)">—</div>
               </div>
             </div>
           </div>
@@ -2301,6 +2345,12 @@ async function loadCRMStats() {
     // Pipeline verisini callcenter view'ına yaz
     updatePipeline(s.pipeline);
 
+    // Son aramalar tablosunu güncelle
+    renderRecentCalls(raw.recent_calls || []);
+
+    // Funnel güncelle
+    updateFunnel(s);
+
     console.log('[CRM] Veriler yüklendi ✓', s);
   } catch(e) {
     console.warn('[CRM] Bağlantı kurulamadı, statik veriler gösteriliyor.');
@@ -2353,6 +2403,220 @@ function updatePipeline(pipeline) {
 // Sayfa yüklenince ve her 60 saniyede güncelle
 loadCRMStats();
 setInterval(loadCRMStats, 60000);
+
+// ── SON ARAMALAR TABLOSU ──────────────────────────────────────────────────────
+function renderRecentCalls(calls) {
+  const tbody = document.getElementById('recent-calls-tbody');
+  if (!tbody) return;
+  if (!calls || !calls.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-mute);padding:20px">Henüz arama kaydı yok</td></tr>';
+    return;
+  }
+  const outcomeMap = {
+    positive: '<span class="status-pill hot">OLUMLU</span>',
+    closed:   '<span class="status-pill invested">YATIRIMCI</span>',
+    'no-answer': '<span class="status-pill noanswer">CEVAPSIZ</span>',
+    negative: '<span class="status-pill noanswer">OLUMSUZ</span>',
+    neutral:  '<span class="status-pill potential">NÖTR</span>',
+    pending:  '<span class="status-pill" style="background:rgba(107,117,153,0.2);color:#6b7599">DEVAM</span>'
+  };
+  const fmtDur = s => s > 0 ? `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}` : '—';
+  tbody.innerHTML = calls.map(c => `
+    <tr>
+      <td class="mono">#${c.id}</td>
+      <td>${c.contact_name || '—'} ${c.vapi ? '<span style="font-size:10px;color:var(--purple)">AI</span>' : ''}</td>
+      <td class="mono">${fmtDur(c.duration)}</td>
+      <td style="color:var(--text-dim);font-size:13px">${c.user_name || '—'}</td>
+      <td>${outcomeMap[c.outcome] || `<span class="status-pill potential">${c.outcome || '?'}</span>`}</td>
+    </tr>`).join('');
+}
+
+// ── FUNNEL GÜNCELLE ───────────────────────────────────────────────────────────
+function updateFunnel(s) {
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = typeof val === 'number' ? val.toLocaleString('tr-TR') : val; };
+  const pct = (a, b) => b > 0 ? (a / b * 100).toFixed(1) + '%' : '—';
+
+  const total   = s.totalContacts || 0;
+  const calls   = s.totalCalls    || 0;
+  const pos     = s.totalPositive || 0;
+  const closed  = s.totalClosed   || 0;
+
+  // Sıcak + karar aşaması
+  const pipe     = s.pipeline || [];
+  const hotN     = (pipe.find(p => p.status === 'hot')?.n    || 0) + (pipe.find(p => p.status === 'decide')?.n || 0);
+
+  set('funnel-n1', total);
+  set('funnel-n2', calls);
+  set('funnel-n3', pos);
+  set('funnel-n4', hotN);
+  set('funnel-n5', closed);
+
+  const r2 = document.getElementById('funnel-r2');
+  const r3 = document.getElementById('funnel-r3');
+  const r4 = document.getElementById('funnel-r4');
+  if (r2) r2.textContent = `↓ arama oranı ${pct(calls, total)}`;
+  if (r3) r3.textContent = `↓ olumlu oran ${pct(pos, calls)}`;
+  if (r4) r4.textContent = `↓ kapanma oranı ${pct(closed, pos)}`;
+
+  // Donut metni güncelle
+  const convText = document.querySelector('[text-anchor="middle"][y="-4"]');
+  if (convText && total > 0) convText.textContent = pct(closed, total).replace('%','') + '%';
+}
+
+// ── BÜTÇE YÖNETİMİ ───────────────────────────────────────────────────────────
+async function loadBudget() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/budget?id=eq.1&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    if (!r.ok) return;
+    const rows = await r.json();
+    if (!rows || !rows.length) return;
+    const b = rows[0];
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || 0; };
+    setVal('budget-target',  b.monthly_target || 8000);
+    setVal('budget-meta',    b.spent_meta     || 0);
+    setVal('budget-twitter', b.spent_twitter  || 0);
+    updateBudgetBar();
+  } catch(e) {}
+}
+
+function updateBudgetBar() {
+  const target  = parseFloat(document.getElementById('budget-target')?.value)  || 0;
+  const meta    = parseFloat(document.getElementById('budget-meta')?.value)    || 0;
+  const twitter = parseFloat(document.getElementById('budget-twitter')?.value) || 0;
+  const spent   = meta + twitter;
+  const rem     = Math.max(target - spent, 0);
+  const pct     = target > 0 ? Math.min(spent / target * 100, 100).toFixed(1) : 0;
+
+  const remEl = document.getElementById('budget-remaining');
+  const pctEl = document.getElementById('budget-pct');
+  const barEl = document.getElementById('budget-bar');
+  if (remEl) remEl.textContent = '₺' + rem.toLocaleString('tr-TR');
+  if (pctEl) pctEl.textContent = pct + '%';
+  if (barEl) { barEl.style.width = pct + '%'; barEl.style.background = pct > 80 ? 'var(--red)' : 'linear-gradient(90deg,var(--gold),var(--red))'; }
+}
+
+// Budget input'larına dinleyici ekle
+['budget-target','budget-meta','budget-twitter'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateBudgetBar);
+});
+
+async function saveBudget() {
+  const target  = parseFloat(document.getElementById('budget-target')?.value)  || 0;
+  const meta    = parseFloat(document.getElementById('budget-meta')?.value)    || 0;
+  const twitter = parseFloat(document.getElementById('budget-twitter')?.value) || 0;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/budget`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify({ id: 1, updated_at: new Date().toISOString(), monthly_target: target, spent_meta: meta, spent_twitter: twitter })
+    });
+    const statusEl = document.getElementById('budget-status');
+    if (statusEl) { statusEl.textContent = r.ok ? '✓ Kaydedildi — ' + new Date().toLocaleTimeString('tr-TR') : '✗ Kayıt hatası'; statusEl.style.color = r.ok ? 'var(--green)' : 'var(--red)'; }
+  } catch(e) {
+    const statusEl = document.getElementById('budget-status');
+    if (statusEl) { statusEl.textContent = '✗ Bağlantı hatası: ' + e.message; statusEl.style.color = 'var(--red)'; }
+  }
+}
+
+// ── TELEGRAM PANEL ────────────────────────────────────────────────────────────
+let telegramApiUrl = '';
+
+async function loadDashboardConfig() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/dashboard_config?select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    if (!r.ok) return;
+    const rows = await r.json();
+    const cfg = {};
+    rows.forEach(row => cfg[row.key] = row.value);
+    telegramApiUrl = cfg.api_url || '';
+    const displayEl = document.getElementById('tg-api-url-display');
+    if (displayEl) displayEl.textContent = telegramApiUrl ? telegramApiUrl.replace('https://', '') + ' ✓' : 'Supabase → dashboard_config\'a api_url ekleyin';
+  } catch(e) {}
+}
+
+const tgTemplates = {
+  altin: `⚡️ <b>ALTIN (XAUUSD) SİNYAL</b>\n\n📈 Yön: ALIŞ\n🎯 Giriş: 3,240 - 3,250\n✅ TP1: 3,280 | TP2: 3,310\n🛑 SL: 3,210\n⚖️ Risk/Ödül: 1:2.5\n\n📊 Sebep: Güçlü destek bölgesi + FED belirsizliği FOMO baskısı arttırıyor.\n\n— Samuray | Exbina`,
+  petrol: `🛢 <b>HAM PETROL (WTI) SİNYAL</b>\n\n📉 Yön: SATIŞ\n🎯 Giriş: 84.50 - 85.00\n✅ TP1: 82.00 | TP2: 80.00\n🛑 SL: 86.50\n⚖️ Risk/Ödül: 1:2\n\n📊 Sebep: OPEC üretim artışı beklentisi + ABD stok verisi baskı yaratıyor.\n\n— Samuray | Exbina`,
+  nasdaq: `📈 <b>NASDAQ 100 (NQ) SİNYAL</b>\n\n📈 Yön: ALIŞ\n🎯 Giriş: 22,100 - 22,200\n✅ TP1: 22,600 | TP2: 23,000\n🛑 SL: 21,800\n⚖️ Risk/Ödül: 1:2.5\n\n📊 Sebep: Büyük tech şirketleri kazanç sezonu yaklaşıyor, alım momentumu güçlü.\n\n— Samuray | Exbina`,
+  dax: `🇩🇪 <b>DAX 40 SİNYAL</b>\n\n📈 Yön: ALIŞ\n🎯 Giriş: 21,800 - 21,900\n✅ TP1: 22,300 | TP2: 22,700\n🛑 SL: 21,500\n⚖️ Risk/Ödül: 1:2\n\n📊 Sebep: Avrupa ECB faiz kararı öncesi fiyatlama + Alman sanayi toparlanması.\n\n— Samuray | Exbina`,
+  genel: `📊 <b>GÜNLÜK PIYASA ÖZETİ</b> · ${new Date().toLocaleDateString('tr-TR')}\n\n🥇 Altın (XAUUSD): Güçlü direnç bölgesine yakın\n🛢 Petrol (WTI): Yatay seyir\n📈 Nasdaq: Yukarı trend devam ediyor\n🇩🇪 DAX: Avrupa seansı açılışı pozitif\n\n💡 Bugünün fırsatı: Fed tutanakları açıklanıyor, volatilite artabilir.\n\n⚡ Daha fazla sinyal için Samuray VIP kanalına katılın.\n\n— Samuray | Exbina`
+};
+
+function tgTemplate(key) {
+  const el = document.getElementById('tg-message');
+  if (el && tgTemplates[key]) el.value = tgTemplates[key];
+}
+
+async function sendTelegramSignal() {
+  const chatId  = document.getElementById('tg-chat-id')?.value?.trim();
+  const message = document.getElementById('tg-message')?.value?.trim();
+  const mode    = document.getElementById('tg-parse-mode')?.value;
+  const statusEl = document.getElementById('tg-status');
+  const btn      = document.getElementById('tg-send-btn');
+
+  if (!chatId)  { if (statusEl) { statusEl.textContent = '✗ Kanal / Chat ID gerekli'; statusEl.style.color = 'var(--red)'; } return; }
+  if (!message) { if (statusEl) { statusEl.textContent = '✗ Mesaj boş'; statusEl.style.color = 'var(--red)'; } return; }
+  if (!telegramApiUrl) { if (statusEl) { statusEl.textContent = '✗ CRM sunucusu URL\'si bulunamadı (dashboard_config\'a api_url ekleyin)'; statusEl.style.color = 'var(--red)'; } return; }
+
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Gönderiliyor...'; }
+  if (statusEl) statusEl.textContent = '';
+
+  try {
+    const r = await fetch(`${telegramApiUrl}/api/telegram/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': 'exbina-ops-2025' },
+      body: JSON.stringify({ chat_id: chatId, message, parse_mode: mode })
+    });
+    const data = await r.json();
+    if (r.ok && data.ok) {
+      if (statusEl) { statusEl.textContent = '✓ Gönderildi · msg_id: ' + (data.message_id || '?'); statusEl.style.color = 'var(--green)'; }
+      loadTelegramSignals(); // refresh list
+    } else {
+      if (statusEl) { statusEl.textContent = '✗ Hata: ' + (data.error || JSON.stringify(data)); statusEl.style.color = 'var(--red)'; }
+    }
+  } catch(e) {
+    if (statusEl) { statusEl.textContent = '✗ Bağlantı hatası — CRM sunucusu açık mı? ngrok çalışıyor mu?'; statusEl.style.color = 'var(--red)'; }
+  }
+  if (btn) { btn.disabled = false; btn.textContent = '⚡ Gönder'; }
+}
+
+async function loadTelegramSignals() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/telegram_signals?order=sent_at.desc&limit=20&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    if (!r.ok) return;
+    const rows = await r.json();
+    const container = document.getElementById('telegram-signals-list');
+    if (!container) return;
+    if (!rows || !rows.length) {
+      container.innerHTML = '<div style="color:var(--text-mute);font-size:13px">Henüz sinyal gönderilmemiş.</div>';
+      return;
+    }
+    container.innerHTML = rows.map(s => {
+      const dt = new Date(s.sent_at).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+      const preview = (s.message || '').replace(/<[^>]+>/g, '').slice(0, 80);
+      return `<div style="padding:12px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-mute);white-space:nowrap;padding-top:2px">${dt}</div>
+        <div style="flex:1">
+          <div style="font-size:11px;color:var(--purple);font-family:'JetBrains Mono',monospace">${s.channel || '?'}</div>
+          <div style="font-size:13px;color:var(--text-dim);margin-top:2px;line-height:1.4">${preview}${s.message && s.message.length > 80 ? '…' : ''}</div>
+        </div>
+        <span style="font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(74,222,128,0.15);color:var(--green);font-family:'JetBrains Mono',monospace;white-space:nowrap">${s.status || 'sent'}</span>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+// Tüm verileri yükle
+loadBudget();
+loadDashboardConfig();
+loadTelegramSignals();
 
 // Build heatmap (7 days × 12 hours)
 (function(){
